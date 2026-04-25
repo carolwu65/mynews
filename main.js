@@ -76,6 +76,70 @@ if (form) {
     });
 }
 
+// Cancellation Form Logic
+const cancelForm = document.getElementById('cancel-form');
+const cancelSuccessMsg = document.getElementById('cancel-success-msg');
+const toggleCancel = document.getElementById('toggle-cancel');
+const cancelSection = document.getElementById('cancel-section');
+
+if (toggleCancel) {
+    toggleCancel.addEventListener('click', () => {
+        const isHidden = cancelSection.style.display === 'none';
+        cancelSection.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) {
+            cancelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+}
+
+if (cancelForm) {
+    cancelForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!confirm('確定要取消報名嗎？此操作無法復原。')) {
+            return;
+        }
+
+        console.log('Cancellation form submitted');
+        
+        const btn = cancelForm.querySelector('button');
+        const originalText = btn.innerText;
+        
+        const formData = {
+            name: document.getElementById('cancel-name').value,
+            email: document.getElementById('cancel-email').value
+        };
+
+        btn.innerText = '處理中...';
+        btn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/cancel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                cancelForm.style.display = 'none';
+                cancelSuccessMsg.style.display = 'block';
+                console.log('Cancellation successful');
+            } else {
+                throw new Error(result.message || 'Server responded with an error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('取消報名失敗：' + error.message);
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+}
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {

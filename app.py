@@ -55,6 +55,36 @@ def send_confirmation_email(target_email, name, org, ticket_type):
         print(f"SMTP Error: {e}")
         return False
 
+def send_cancellation_email(target_email, name):
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = f"2026 未來科技研討會 <{SMTP_EMAIL}>"
+        msg['To'] = target_email
+        msg['Subject'] = "【取消報名確認】2026 未來科技研討會"
+
+        body = f"""
+親愛的 {name} 您好，
+
+這封郵件是為了確認我們已收到您的請求，並已取消您在 2026 未來科技研討會的報名。
+
+如果您之後改變主意，歡迎隨時再次前往官網報名。
+
+期待未來有機會能為您服務！
+
+未來科技研討會 籌備小組 敬上
+"""
+        msg.attach(MIMEText(body, 'plain', 'utf-8'))
+
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"SMTP Cancellation Error: {e}")
+        return False
+
 from email.mime.base import MIMEBase
 from email import encoders
 
@@ -144,6 +174,50 @@ def register():
         return jsonify({"status": "success", "message": msg}), 200
     except Exception as e:
         print(f"Error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route('/api/cancel', methods=['POST'])
+def cancel_registration():
+    try:
+        data = request.json
+        name = data.get('name')
+        email = data.get('email')
+        
+        if not os.path.exists(REGISTRATIONS_FILE):
+            return jsonify({"status": "error", "message": "No registrations found."}), 404
+        
+        found = False
+        updated_rows = []
+        header = None
+        
+        with open(REGISTRATIONS_FILE, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            header = next(reader, None)
+            for row in reader:
+                # row structure: Timestamp, Name, Email, Organization, TicketType
+                if len(row) >= 3 and row[1] == name and row[2] == email:
+                    found = True
+                    continue
+                updated_rows.append(row)
+        
+        if not found:
+            return jsonify({"status": "error", "message": "Matching registration not found."}), 404
+            
+        with open(REGISTRATIONS_FILE, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            if header:
+                writer.writerow(header)
+            writer.writerows(updated_rows)
+            
+        # Send cancellation email to user
+        send_cancellation_email(email, name)
+        
+        # Send updated CSV to admin
+        send_csv_to_admin()
+        
+        return jsonify({"status": "success", "message": "Registration cancelled successfully."}), 200
+    except Exception as e:
+        print(f"Cancellation Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':

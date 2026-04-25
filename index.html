@@ -132,6 +132,29 @@
                 <p>我們已將確認信發送至您的信箱。</p>
             </div>
         </div>
+
+        <div class="cancel-link-container reveal" style="text-align: center; margin-top: 40px;">
+            <p style="color: var(--text-muted);">已經報名但需要取消？ <a href="javascript:void(0)" id="toggle-cancel" style="color: var(--primary); text-decoration: underline;">點擊此處取消報名</a></p>
+        </div>
+
+        <div id="cancel-section" class="register-form glass reveal" style="display: none; margin-top: 20px;">
+            <h3 style="text-align: center; margin-bottom: 20px;">取消報名</h3>
+            <form id="cancel-form">
+                <div class="form-group">
+                    <label for="cancel-name">姓名</label>
+                    <input type="text" id="cancel-name" required placeholder="請輸入原報名姓名">
+                </div>
+                <div class="form-group">
+                    <label for="cancel-email">電子郵件</label>
+                    <input type="email" id="cancel-email" required placeholder="請輸入原報名 Email">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">確認取消報名</button>
+            </form>
+            <div id="cancel-success-msg" style="display: none; text-align: center; margin-top: 20px;">
+                <h3 style="color: #ef4444;">已取消報名</h3>
+                <p>我們已向您的信箱發送取消確認郵件。</p>
+            </div>
+        </div>
     </section>
 
     <footer>
