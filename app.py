@@ -55,6 +55,42 @@ def send_confirmation_email(target_email, name, org, ticket_type):
         print(f"SMTP Error: {e}")
         return False
 
+from email.mime.base import MIMEBase
+from email import encoders
+
+def send_csv_to_admin():
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = f"報名系統自動備份 <{SMTP_EMAIL}>"
+        msg['To'] = SMTP_EMAIL
+        msg['Subject'] = f"【最新報名清單備份】{datetime.now().strftime('%Y-%m-%d %H:%M')}"
+
+        body = "附件為目前最新的報名清單 CSV 檔案。"
+        msg.attach(MIMEText(body, 'plain', 'utf-8'))
+
+        # Attach CSV file
+        if os.path.exists(REGISTRATIONS_FILE):
+            with open(REGISTRATIONS_FILE, "rb") as f:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(f.read())
+            encoders.encode_base64(part)
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename={REGISTRATIONS_FILE}",
+            )
+            msg.attach(part)
+
+        # Connect and send
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Admin Backup Error: {e}")
+        return False
+
 # Ensure the static folders exist (assets)
 if not os.path.exists('assets'):
     os.makedirs('assets')
@@ -92,14 +128,15 @@ def register():
                 writer.writerow(['Timestamp', 'Name', 'Email', 'Organization', 'TicketType'])
             writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name, email, org, ticket_type])
         
-        # 2. Send Real Email
+        # 2. Send Real Email to User
         email_sent = send_confirmation_email(email, name, org, ticket_type)
         
+        # 3. Send Backup CSV to Admin
+        send_csv_to_admin()
+        
         if email_sent:
-            print(f"SUCCESS: Real email sent to {email}")
             msg = "Registration successful and confirmation email sent."
         else:
-            print(f"WARNING: Data saved but email failed to send to {email}")
             msg = "Registration successful but failed to send email."
         
         return jsonify({"status": "success", "message": msg}), 200
