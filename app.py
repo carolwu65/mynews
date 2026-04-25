@@ -4,7 +4,7 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 app = Flask(__name__, static_folder='.')
 
@@ -63,7 +63,8 @@ def send_csv_to_admin():
         msg = MIMEMultipart()
         msg['From'] = f"報名系統自動備份 <{SMTP_EMAIL}>"
         msg['To'] = SMTP_EMAIL
-        msg['Subject'] = f"【最新報名清單備份】{datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        tw_tz = timezone(timedelta(hours=8))
+        msg['Subject'] = f"【最新報名清單備份】{datetime.now(tw_tz).strftime('%Y-%m-%d %H:%M')}"
 
         body = "附件為目前最新的報名清單 CSV 檔案。"
         msg.attach(MIMEText(body, 'plain', 'utf-8'))
@@ -121,12 +122,13 @@ def register():
         ticket_type = data.get('type')
         
         # 1. Save to CSV
+        tw_tz = timezone(timedelta(hours=8))
         file_exists = os.path.isfile(REGISTRATIONS_FILE)
         with open(REGISTRATIONS_FILE, mode='a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             if not file_exists:
                 writer.writerow(['Timestamp', 'Name', 'Email', 'Organization', 'TicketType'])
-            writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name, email, org, ticket_type])
+            writer.writerow([datetime.now(tw_tz).strftime("%Y-%m-%d %H:%M:%S"), name, email, org, ticket_type])
         
         # 2. Send Real Email to User
         email_sent = send_confirmation_email(email, name, org, ticket_type)
