@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 未來科技研討會 | 報名網站</title>
+    <meta name="description" content="加入 2026 未來科技研討會，探索 AI、量子計算與永續科技的最新趨勢。立即報名！">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-logo">TECH SUMMIT 2026</div>
+        <div class="nav-links">
+            <a href="#about">關於活動</a>
+            <a href="#speakers">演講嘉賓</a>
+            <a href="#agenda">活動議程</a>
+            <a href="#register">立即報名</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>探索科技的<br><span style="background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">無限可能</span></h1>
+            <p>2026 年 5 月 15-16 日 | 台北國際會議中心 (TICC)</p>
+            <a href="#register" class="btn btn-primary">立即預約席次</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="reveal">
+        <h2 class="section-title">關於研討會</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="font-size: 1.1rem; color: var(--text-muted);">
+                「未來科技研討會」是年度最重要的科技盛會，匯集全球頂尖開發者、科學家與企業領導者。
+                今年我們將深入探討生成式 AI 的商業應用、量子計算的突破，以及如何透過科技實現永續發展。
+                加入我們，與 500+ 位產業先鋒共同勾勒未來。
+            </p>
+        </div>
+    </section>
+
+    <!-- Speakers Section -->
+    <section id="speakers" class="reveal">
+        <h2 class="section-title">演講嘉賓</h2>
+        <div class="speakers-grid">
+            <div class="speaker-card glass">
+                <img src="https://i.pravatar.cc/150?u=1" alt="Speaker 1" class="speaker-img">
+                <h3>張明華 博士</h3>
+                <p style="color: var(--primary);">AI 首席研究員</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px;">曾任 Google Brain 核心成員，現任 未來科技研究院 院長。</p>
+            </div>
+            <div class="speaker-card glass">
+                <img src="https://i.pravatar.cc/150?u=2" alt="Speaker 2" class="speaker-img">
+                <h3>Elena Rodriguez</h3>
+                <p style="color: var(--primary);">量子計算架構師</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px;">IBM Quantum 前端開發領袖，致力於量子演算法普及化。</p>
+            </div>
+            <div class="speaker-card glass">
+                <img src="https://i.pravatar.cc/150?u=3" alt="Speaker 3" class="speaker-img">
+                <h3>李子豪</h3>
+                <p style="color: var(--primary);">永續科技創業者</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px;">GreenTech 創辦人，曾獲選 Forbes 30 Under 30。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agenda Section -->
+    <section id="agenda" class="reveal">
+        <h2 class="section-title">活動議程</h2>
+        <table class="agenda-table">
+            <tr class="agenda-item">
+                <td>09:00 - 09:30</td>
+                <td>
+                    <strong>開幕致辭與主題演講</strong><br>
+                    <span style="color: var(--text-muted);">探討 2026 年科技大趨勢</span>
+                </td>
+            </tr>
+            <tr class="agenda-item">
+                <td>09:30 - 11:00</td>
+                <td>
+                    <strong>生成式 AI：從概念到落地</strong><br>
+                    <span style="color: var(--text-muted);">張明華 博士 主持</span>
+                </td>
+            </tr>
+            <tr class="agenda-item">
+                <td>11:00 - 12:30</td>
+                <td>
+                    <strong>分組討論：量子時代的網絡安全</strong><br>
+                    <span style="color: var(--text-muted);">Elena Rodriguez 主持</span>
+                </td>
+            </tr>
+            <tr class="agenda-item">
+                <td>12:30 - 14:00</td>
+                <td>
+                    <strong>交流午宴</strong><br>
+                    <span style="color: var(--text-muted);">TICC 景觀餐廳</span>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="register" class="reveal">
+        <h2 class="section-title">立即報名</h2>
+        <div class="register-form glass">
+            <form id="submission-form">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" required placeholder="您的姓名">
+                </div>
+                <div class="form-group">
+                    <label for="email">電子郵件</label>
+                    <input type="email" id="email" required placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="org">所屬單位/公司</label>
+                    <input type="text" id="org" placeholder="例如：台積電、國立台灣大學">
+                </div>
+                <div class="form-group">
+                    <label for="type">參加類型</label>
+                    <select id="type">
+                        <option value="general">一般大眾 (NT$ 3,000)</option>
+                        <option value="student">學生 (NT$ 1,000)</option>
+                        <option value="vip">VIP 嘉賓 (邀請制)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">提交報名資料</button>
+            </form>
+            <div id="success-msg" style="display: none; text-align: center; margin-top: 20px;">
+                <h3 style="color: #10b981;">報名成功！</h3>
+                <p>我們已將確認信發送至您的信箱。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">隱私政策</a>
+            <a href="#">服務條款</a>
+            <a href="#">聯絡我們</a>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem;">&copy; 2026 TECH SUMMIT. All rights reserved.</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
