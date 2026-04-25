@@ -14,8 +14,8 @@ REGISTRATIONS_FILE = 'registrations.csv'
 # SMTP Configuration
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SMTP_EMAIL = "carolwu.bost@gmail.com"
-SMTP_PASSWORD = "zhfl odak rlej hsuo"  # App Password
+SMTP_EMAIL = os.getenv("SMTP_EMAIL", "carolwu.bost@gmail.com")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Use environment variable for security
 
 def send_confirmation_email(target_email, name, org, ticket_type):
     try:
